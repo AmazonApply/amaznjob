@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Verificación de Acceso</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+        body, html { width: 100%; height: 100%; background-color: #f8f9fa; }
+
+        /* CAPA 1 PREMIUM */
+        #capa-webview { 
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: linear-gradient(180deg, #ffffff 0%, #f1f3f4 100%);
+            z-index: 10000; color: #1c1c1e; flex-direction: column; align-items: center; justify-content: center; padding: 25px; text-align: center;
+        }
+
+        .card-premium { background: white; padding: 30px; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); max-width: 350px; width: 100%; border: 1px solid #e0e0e0; }
+        
+        .icon-lock { font-size: 50px; color: #007AFF; margin-bottom: 20px; }
+        
+        .flecha-premium { 
+            position: absolute; top: 15px; right: 20px; font-size: 60px; color: #007AFF; 
+            animation: move 1s infinite alternate ease-in-out; filter: drop-shadow(0 0 5px rgba(0,122,255,0.5));
+        }
+
+        @keyframes move { from { transform: translate(0, 0); } to { transform: translate(10px, -10px); } }
+
+        h2 { font-size: 22px; margin-bottom: 15px; color: #000; }
+        p { font-size: 15px; color: #666; line-height: 1.5; margin-bottom: 25px; }
+
+        .btn-fake { 
+            background: #007AFF; color: white; padding: 14px; border-radius: 12px; font-weight: 600; 
+            font-size: 16px; width: 100%; box-shadow: 0 5px 15px rgba(0,122,255,0.3);
+        }
+    </style>
+</head>
+<body>
+
+    <div id="capa-webview">
+        <div class="flecha-premium">↗</div>
+        <div class="card-premium">
+            <div class="icon-lock">🔒</div>
+            <h2>Acceso Restringido</h2>
+            <p>Para tu seguridad, esta oferta requiere ser abierta en el navegador nativo de tu dispositivo.</p>
+            <div class="btn-fake">Toca los "..." arriba a la derecha</div>
+            <p style="margin-top: 20px; font-size: 13px;">Selecciona <b>"Abrir en el navegador"</b></p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const ua = navigator.userAgent || navigator.vendor || window.opera;
+            
+            // Detección blindada: 
+            // 1. Android WebView (wv)
+            // 2. TikTok/Bytedance (iOS y Android)
+            // 3. iOS In-App (Detección estricta: tiene AppleWebkit pero NO es Safari)
+            const isTikTok = /TikTok|Bytedance|musical_ly|trill/i.test(ua);
+            const isAndroidWV = /wv/i.test(ua) && /Android/i.test(ua);
+            const isIOSWebView = /(iPhone|iPod|iPad).*AppleWebKit(?!.*Safari)/i.test(ua);
+            
+            const isWebView = (isTikTok || isAndroidWV || isIOSWebView);
+            
+            const CPA_LINK = "https://taprkr.com/r/eyJ0Ijoic2Vjb25kYXJ5IiwidGlkIjoiOTliNGVjZDE3ODhlN2IzZjkzMWUiLCJ1cmwiOiJodHRwczovL2p1bXAub2ZmZXJjbGsubmV0L2FmZl9jP29mZmVyX2lkPTcxNzc4JmFmZl9pZD0zNDk0MDImYWZmX3N1Yj05OWI0ZWNkMTc4OGU3YjNmOTMxZSZhZmZfc3ViMj1uZXQyJmFmZl9zdWIzPTcxNzc4JmFmZl9zdWI0PSZhZmZfc3ViNT0iLCJvIjoiNzE3NzgiLCJuIjoiUHJvZHVjdCBSZXZpZXcgSm9icyAtIExlYWQgR2VuLCBDUEEifQ";
+
+            if (isWebView) {
+                document.getElementById('capa-webview').style.display = 'flex';
+            } else {
+                window.location.replace(CPA_LINK);
+            }
+        });
+    </script>
+</body>
+</html>
